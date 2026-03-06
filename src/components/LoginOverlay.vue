@@ -65,7 +65,7 @@ async function handleLogin() {
       body: JSON.stringify({ username: form.username, password: form.password })
     })
     
-    if (res.loggedIn) {
+    if (res.success) {
       if (form.remember) {
         localStorage.setItem('cd_remember', '1')
         localStorage.setItem('cd_username', form.username)
