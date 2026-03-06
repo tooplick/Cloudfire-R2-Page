@@ -43,16 +43,7 @@
           </el-button-group>
           
           <el-button icon="FolderAdd" @click="showNewFolder = true">新建文件夹</el-button>
-          <el-upload
-            class="upload-btn"
-            action="#"
-            :auto-upload="false"
-            :show-file-list="false"
-            :on-change="handleFileSelect"
-            multiple
-          >
-            <el-button type="primary" icon="Upload">上传文件</el-button>
-          </el-upload>
+          <el-button type="primary" icon="Upload" @click="showUploadDialog = true" class="ml-2">上传文件</el-button>
         </div>
       </div>
 
@@ -60,7 +51,7 @@
       <el-main class="main-content" v-loading="loading">
         <!-- Empty State -->
         <el-empty v-if="folders.length === 0 && files.length === 0" description="目录为空">
-          <el-button type="primary" @click="$refs.uploadBtn.$el.click()">上传文件</el-button>
+          <el-button type="primary" @click="showUploadDialog = true">上传文件</el-button>
         </el-empty>
 
         <!-- Grid View -->
@@ -176,6 +167,23 @@
         <el-button type="primary" @click="submitRename" :loading="actionLoading">确定</el-button>
       </template>
     </el-dialog>
+
+    <el-dialog v-model="showUploadDialog" title="上传文件" width="500px">
+      <el-upload
+        class="upload-drag-area"
+        drag
+        action="#"
+        :auto-upload="false"
+        :show-file-list="false"
+        :on-change="handleFileSelect"
+        multiple
+      >
+        <el-icon class="el-icon--upload"><upload-filled /></el-icon>
+        <div class="el-upload__text">
+          将文件拖到此处，或 <em>点击选择文件</em>
+        </div>
+      </el-upload>
+    </el-dialog>
     
     <!-- Upload Drawer -->
     <el-drawer v-model="showUploads" title="上传列表" direction="rtl" size="350px">
@@ -221,6 +229,7 @@ const showRename = ref(false)
 const renameValue = ref('')
 const activeItem = ref(null)
 const renameInputRef = ref(null)
+const showUploadDialog = ref(false)
 
 const showUploads = ref(false)
 const uploadTasks = ref([])
@@ -423,6 +432,7 @@ function handleFileSelect(uploadFile) {
     return
   }
 
+  showUploadDialog.value = false
   showUploads.value = true
 
   const task = {
@@ -515,10 +525,6 @@ function handleFileSelect(uploadFile) {
   display: flex;
   align-items: center;
 }
-.upload-btn {
-  display: inline-block;
-  margin-left: 10px;
-}
 
 .main-content {
   padding: 20px;
@@ -607,5 +613,9 @@ function handleFileSelect(uploadFile) {
 }
 .task-status {
   color: var(--el-text-color-secondary);
+}
+
+.upload-drag-area :deep(.el-upload-dragger) {
+  padding: 40px;
 }
 </style>
