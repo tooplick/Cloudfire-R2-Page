@@ -4,7 +4,7 @@ pages_build_output_dir = "./"
 
 [[r2_buckets]]
 binding = "R2_BUCKET"
-bucket_name = "my-cloud-drive"
+bucket_name = "file" # R2 存储桶名称
 
 # 环境变量在 Cloudflare Dashboard 中配置:
 # AUTH_USERNAME - 登录用户名
