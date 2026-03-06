@@ -43,6 +43,7 @@
           </el-button-group>
           
           <el-button icon="FolderAdd" @click="showNewFolder = true">新建文件夹</el-button>
+          <el-button icon="List" @click="showUploads = true" class="ml-2">上传任务</el-button>
           <el-button type="primary" icon="Upload" @click="showUploadDialog = true" class="ml-2">上传文件</el-button>
         </div>
       </div>
@@ -191,8 +192,11 @@
       </el-upload>
     </el-dialog>
     
-    <!-- Upload Drawer -->
-    <el-drawer v-model="showUploads" title="上传列表" direction="rtl" size="350px">
+    <!-- Upload Tasks Dialog -->
+    <el-dialog v-model="showUploads" title="上传任务" width="500px" align-center>
+      <div v-if="uploadTasks.length === 0" style="text-align: center; color: var(--el-text-color-secondary); padding: 20px 0;">
+        暂无上传任务
+      </div>
       <div v-for="task in uploadTasks" :key="task.id" class="upload-task">
         <div class="task-header">
           <span class="task-name" :title="task.file.name">{{ task.file.name }}</span>
@@ -200,7 +204,7 @@
         </div>
         <el-progress :percentage="task.progress" :status="task.progressStatus" />
       </div>
-    </el-drawer>
+    </el-dialog>
   </div>
 </template>
 

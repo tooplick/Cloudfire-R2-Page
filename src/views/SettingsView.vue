@@ -2,10 +2,10 @@
   <div class="settings-container">
     <el-header class="settings-header">
       <el-button link icon="Back" @click="router.push('/')">返回云盘</el-button>
-      <h2>系统设置</h2>
     </el-header>
 
     <el-main class="settings-main" v-loading="loading">
+      <h2 class="page-title">系统设置</h2>
       <el-row :gutter="20">
         <!-- Storage Usage Card -->
         <el-col :span="24" class="mb-4">
@@ -257,10 +257,11 @@ function resetToDefault() {
   border-bottom: 1px solid var(--el-border-color-light);
   padding: 0 20px;
 }
-.settings-header h2 {
-  margin: 0 0 0 16px;
-  font-size: 18px;
-  font-weight: 500;
+.page-title {
+  margin: 0 0 20px 0;
+  font-size: 24px;
+  font-weight: 600;
+  color: var(--el-text-color-primary);
 }
 .settings-main {
   max-width: 900px;
