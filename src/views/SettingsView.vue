@@ -28,7 +28,7 @@
                 :show-text="false"
               />
               <div class="text-xs text-muted mt-2" v-if="storageDetails">
-                文件数: {{ storageDetails.filesCount }}, 文件夹: {{ storageDetails.foldersCount }}
+                文件数: {{ storageDetails.fileCount }}
               </div>
             </div>
           </el-card>
@@ -193,11 +193,10 @@ async function loadStorageUsage() {
   loadingStorage.value = true
   try {
     const res = await api('/api/storage')
-    if (res.success) {
-      storageUsed.value = res.usage.sizeBytes
+    if (res.success && res.storage) {
+      storageUsed.value = res.storage.usedSize
       storageDetails.value = {
-        filesCount: res.usage.filesCount,
-        foldersCount: res.usage.foldersCount
+        fileCount: res.storage.fileCount
       }
     }
   } catch (err) {
