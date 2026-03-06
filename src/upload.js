@@ -15,6 +15,8 @@ export async function uploadChunkedFile(file, currentPath, settings, onProgress)
 
     onProgress(0, `初始化上传 0/${totalChunks}`)
 
+    let uploadId = null
+
     try {
         // 1. 初始化分片上传
         const initResp = await fetch('/api/upload-chunk?action=init', {
@@ -25,7 +27,7 @@ export async function uploadChunkedFile(file, currentPath, settings, onProgress)
         const initData = await initResp.json()
         if (!initData.success) throw new Error(initData.error || '初始化失败')
 
-        const { uploadId } = initData
+        uploadId = initData.uploadId
         const parts = []
 
         // 2. 上传每个分片
@@ -62,6 +64,14 @@ export async function uploadChunkedFile(file, currentPath, settings, onProgress)
         onProgress(100, `上传成功`)
         return true
     } catch (err) {
+        if (uploadId) {
+            // 如果已经有了 uploadId，说明在上传途中失败，尝试向后端发送 abort 请求以清理未完成的分片记录
+            fetch('/api/upload-chunk?action=abort', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ key, uploadId }),
+            }).catch(() => { /* 忽略 abort 失败 */ })
+        }
         onProgress(0, `失败: ${err.message}`)
         throw err
     }
