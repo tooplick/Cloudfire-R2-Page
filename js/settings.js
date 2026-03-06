@@ -28,6 +28,10 @@
             window.location.href = '/';
             throw new Error('未登录');
         }
+        const ct = resp.headers.get('Content-Type') || '';
+        if (!ct.includes('application/json')) {
+            throw new Error(`服务端错误 (${resp.status})`);
+        }
         const data = await resp.json();
         if (!resp.ok) throw new Error(data.error || `请求失败 (${resp.status})`);
         return data;
