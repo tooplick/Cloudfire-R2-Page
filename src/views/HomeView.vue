@@ -70,7 +70,7 @@
                     </template>
                   </el-dropdown>
                 </div>
-                <el-icon :size="48" color="#3b82f6"><Folder /></el-icon>
+                <el-icon class="grid-icon text-primary"><Folder /></el-icon>
                 <div class="file-name" :title="folder.name">{{ folder.name }}</div>
               </el-card>
             </el-col>
@@ -91,7 +91,7 @@
                     </template>
                   </el-dropdown>
                 </div>
-                <el-icon :size="48" color="#64748b"><component :is="getFileIcon(file.name)" /></el-icon>
+                <el-icon class="grid-icon text-secondary"><component :is="getFileIcon(file.name)" /></el-icon>
                 <div class="file-name" :title="file.name">{{ file.name }}</div>
                 <div class="file-meta">
                   <span>{{ formatSize(file.size) }}</span>
@@ -107,9 +107,11 @@
           <el-table-column label="名称" min-width="250">
             <template #default="{ row }">
               <div class="flex-align-center">
-                <el-icon :size="20" :color="row.isFolder ? '#3b82f6' : '#64748b'" class="mr-2">
-                  <Folder v-if="row.isFolder" />
-                  <component v-else :is="getFileIcon(row.name)" />
+                <el-icon class="list-icon mr-2 text-primary" v-if="row.isFolder">
+                  <Folder />
+                </el-icon>
+                <el-icon class="list-icon mr-2 text-secondary" v-else>
+                  <component :is="getFileIcon(row.name)" />
                 </el-icon>
                 {{ row.name }}
               </div>
@@ -199,8 +201,8 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted, nextTick } from 'vue'
-import { useRouter } from 'vue-router'
+import { ref, computed, onMounted, watch, nextTick } from 'vue'
+import { useRouter, useRoute } from 'vue-router'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { api } from '../api'
 import { formatSize, formatTime, getFileIcon, isPreviewable } from '../utils'
@@ -208,6 +210,7 @@ import { uploadSingleFile, uploadChunkedFile } from '../upload'
 import LoginOverlay from '../components/LoginOverlay.vue'
 
 const router = useRouter()
+const route = useRoute()
 
 // 状态
 const isLoggedIn = ref(false)
@@ -215,7 +218,7 @@ const username = ref('')
 const loading = ref(true)
 const actionLoading = ref(false)
 
-const currentPath = ref('')
+const currentPath = computed(() => route.query.path || '')
 const viewMode = ref('grid')
 
 const folders = ref([])
@@ -293,8 +296,17 @@ async function loadPath(path) {
   }
 }
 
+watch(
+  () => route.query.path,
+  (newPath) => {
+    if (isLoggedIn.value) {
+      loadPath(newPath || '')
+    }
+  }
+)
+
 function navigateTo(path) {
-  loadPath(path)
+  router.push({ query: { path: path || undefined } })
 }
 
 // 顶部菜单
@@ -584,6 +596,29 @@ function handleFileSelect(uploadFile) {
 .flex-align-center {
   display: flex;
   align-items: center;
+}
+.list-icon {
+  font-size: 20px;
+  width: 20px;
+  height: 20px;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+}
+.grid-icon {
+  font-size: 48px;
+  width: 48px;
+  height: 48px;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 8px;
+}
+.text-primary {
+  color: #3b82f6;
+}
+.text-secondary {
+  color: #64748b;
 }
 .text-danger {
   color: var(--el-color-danger);
