@@ -1,0 +1,10 @@
+{
+    "name": "cloudfire-r2-page",
+    "version": "1.0.0",
+    "private": true,
+    "description": "Cloudflare R2 个人云盘",
+    "scripts": {
+        "dev": "npx wrangler pages dev ./ --r2=R2_BUCKET --port=8788",
+        "deploy": "npx wrangler pages deploy ./"
+    }
+}
