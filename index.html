@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,8 +9,9 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/style.css">
+  <link rel="stylesheet" href="/css/style.css">
 </head>
+
 <body>
 
   <!-- 登录页面 -->
@@ -17,7 +19,18 @@
     <div class="login-container">
       <div class="login-card glass">
         <div class="login-header">
-          <div class="login-icon">☁️</div>
+          <div class="login-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none"
+              stroke="url(#iconGradient)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <defs>
+                <linearGradient id="iconGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#6366f1" />
+                  <stop offset="100%" stop-color="#3b82f6" />
+                </linearGradient>
+              </defs>
+              <path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z" />
+            </svg>
+          </div>
           <h1>CloudDrive</h1>
           <p>个人云盘存储</p>
         </div>
@@ -28,7 +41,15 @@
           </div>
           <div class="input-group">
             <label for="password">密码</label>
-            <input type="password" id="password" name="password" placeholder="请输入密码" autocomplete="current-password" required>
+            <input type="password" id="password" name="password" placeholder="请输入密码" autocomplete="current-password"
+              required>
+          </div>
+          <div class="remember-group">
+            <label class="checkbox-label">
+              <input type="checkbox" id="remember-password">
+              <span class="checkbox-custom"></span>
+              <span>记住密码</span>
+            </label>
           </div>
           <div id="login-error" class="error-msg hidden"></div>
           <button type="submit" id="login-btn" class="btn btn-primary btn-full">
@@ -47,11 +68,25 @@
     <!-- 顶部导航栏 -->
     <header class="header glass">
       <div class="header-left">
-        <div class="logo">☁️ CloudDrive</div>
+        <div class="logo">
+          <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z" />
+          </svg>
+          CloudDrive
+        </div>
       </div>
       <div class="header-right">
         <span id="user-info" class="user-info"></span>
-        <button id="logout-btn" class="btn btn-ghost" title="退出登录">退出</button>
+        <button id="logout-btn" class="btn btn-ghost" title="退出登录">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+            <polyline points="16 17 21 12 16 7" />
+            <line x1="21" y1="12" x2="9" y2="12" />
+          </svg>
+          退出
+        </button>
       </div>
     </header>
 
@@ -64,14 +99,45 @@
       </div>
       <div class="toolbar-right">
         <button id="btn-upload" class="btn btn-primary" title="上传文件">
-          <span class="icon">📤</span> 上传
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+            <polyline points="17 8 12 3 7 8" />
+            <line x1="12" y1="3" x2="12" y2="15" />
+          </svg>
+          上传
         </button>
         <button id="btn-new-folder" class="btn btn-secondary" title="新建文件夹">
-          <span class="icon">📁</span> 新建文件夹
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 10v6" />
+            <path d="M9 13h6" />
+            <path
+              d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z" />
+          </svg>
+          新建文件夹
         </button>
         <div class="view-toggle">
-          <button id="btn-grid-view" class="btn btn-icon active" title="网格视图">▦</button>
-          <button id="btn-list-view" class="btn btn-icon" title="列表视图">☰</button>
+          <button id="btn-grid-view" class="btn btn-icon active" title="网格视图">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="3" width="7" height="7" />
+              <rect x="14" y="3" width="7" height="7" />
+              <rect x="3" y="14" width="7" height="7" />
+              <rect x="14" y="14" width="7" height="7" />
+            </svg>
+          </button>
+          <button id="btn-list-view" class="btn btn-icon" title="列表视图">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="8" y1="6" x2="21" y2="6" />
+              <line x1="8" y1="12" x2="21" y2="12" />
+              <line x1="8" y1="18" x2="21" y2="18" />
+              <line x1="3" y1="6" x2="3.01" y2="6" />
+              <line x1="3" y1="12" x2="3.01" y2="12" />
+              <line x1="3" y1="18" x2="3.01" y2="18" />
+            </svg>
+          </button>
         </div>
       </div>
     </div>
@@ -79,7 +145,14 @@
     <!-- 上传区域（拖拽） -->
     <div id="drop-zone" class="drop-zone hidden">
       <div class="drop-zone-content">
-        <span class="drop-icon">📥</span>
+        <span class="drop-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+            <polyline points="7 10 12 15 17 10" />
+            <line x1="12" y1="15" x2="12" y2="3" />
+          </svg>
+        </span>
         <p>拖拽文件到此处上传</p>
       </div>
     </div>
@@ -88,7 +161,13 @@
     <div id="upload-progress" class="upload-progress hidden">
       <div class="upload-progress-header">
         <span>上传进度</span>
-        <button id="btn-close-progress" class="btn btn-icon btn-sm">✕</button>
+        <button id="btn-close-progress" class="btn btn-icon btn-sm">
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18" />
+            <line x1="6" y1="6" x2="18" y2="18" />
+          </svg>
+        </button>
       </div>
       <div id="upload-list" class="upload-list"></div>
     </div>
@@ -100,7 +179,13 @@
         <p>加载中...</p>
       </div>
       <div id="empty-state" class="empty-state hidden">
-        <span class="empty-icon">📂</span>
+        <span class="empty-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path
+              d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z" />
+          </svg>
+        </span>
         <p>此文件夹为空</p>
         <p class="text-muted">上传文件或创建文件夹以开始使用</p>
       </div>
@@ -125,7 +210,13 @@
       <div class="modal-content glass">
         <div class="modal-header">
           <h3 id="preview-title">预览</h3>
-          <button id="preview-close" class="btn btn-icon">✕</button>
+          <button id="preview-close" class="btn btn-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="18" y1="6" x2="6" y2="18" />
+              <line x1="6" y1="6" x2="18" y2="18" />
+            </svg>
+          </button>
         </div>
         <div id="preview-body" class="modal-body"></div>
       </div>
@@ -137,7 +228,13 @@
       <div class="modal-content glass modal-sm">
         <div class="modal-header">
           <h3 id="input-modal-title">输入</h3>
-          <button id="input-modal-close" class="btn btn-icon">✕</button>
+          <button id="input-modal-close" class="btn btn-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="18" y1="6" x2="6" y2="18" />
+              <line x1="6" y1="6" x2="18" y2="18" />
+            </svg>
+          </button>
         </div>
         <div class="modal-body">
           <div class="input-group">
@@ -157,7 +254,13 @@
       <div class="modal-content glass modal-sm">
         <div class="modal-header">
           <h3>确认删除</h3>
-          <button id="confirm-modal-close" class="btn btn-icon">✕</button>
+          <button id="confirm-modal-close" class="btn btn-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="18" y1="6" x2="6" y2="18" />
+              <line x1="6" y1="6" x2="18" y2="18" />
+            </svg>
+          </button>
         </div>
         <div class="modal-body">
           <p id="confirm-modal-msg">确定要删除吗？此操作不可撤销。</p>
@@ -173,6 +276,7 @@
     <div id="toast-container" class="toast-container"></div>
   </div>
 
-  <script src="/script.js"></script>
+  <script src="/js/script.js"></script>
 </body>
+
 </html>

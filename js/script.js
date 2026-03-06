@@ -3,6 +3,34 @@
 (function () {
     'use strict';
 
+    // ===== SVG 图标 =====
+    const SVG = {
+        folder: '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"/></svg>',
+        folderLg: '<svg xmlns="http://www.w3.org/2000/svg" width="42" height="42" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"/></svg>',
+        file: '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/></svg>',
+        fileLg: '<svg xmlns="http://www.w3.org/2000/svg" width="42" height="42" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/></svg>',
+        image: '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="3" rx="2" ry="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></svg>',
+        imageLg: '<svg xmlns="http://www.w3.org/2000/svg" width="42" height="42" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="3" rx="2" ry="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></svg>',
+        video: '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m16 13 5.223 3.482a.5.5 0 0 0 .777-.416V7.87a.5.5 0 0 0-.752-.432L16 10.5"/><rect x="2" y="6" width="14" height="12" rx="2"/></svg>',
+        videoLg: '<svg xmlns="http://www.w3.org/2000/svg" width="42" height="42" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="m16 13 5.223 3.482a.5.5 0 0 0 .777-.416V7.87a.5.5 0 0 0-.752-.432L16 10.5"/><rect x="2" y="6" width="14" height="12" rx="2"/></svg>',
+        music: '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>',
+        musicLg: '<svg xmlns="http://www.w3.org/2000/svg" width="42" height="42" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>',
+        code: '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>',
+        codeLg: '<svg xmlns="http://www.w3.org/2000/svg" width="42" height="42" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>',
+        archive: '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="5" x="2" y="3" rx="1"/><path d="M4 8v11a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8"/><path d="M10 12h4"/></svg>',
+        archiveLg: '<svg xmlns="http://www.w3.org/2000/svg" width="42" height="42" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="5" x="2" y="3" rx="1"/><path d="M4 8v11a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8"/><path d="M10 12h4"/></svg>',
+        download: '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>',
+        eye: '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"/><circle cx="12" cy="12" r="3"/></svg>',
+        edit: '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z"/></svg>',
+        trash: '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/></svg>',
+        more: '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg>',
+        user: '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>',
+        folderRoot: '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"/></svg>',
+        check: '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>',
+        x: '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>',
+        info: '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>',
+    };
+
     // ===== 状态管理 =====
     const state = {
         currentPath: '',
@@ -74,7 +102,7 @@
         return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())} ${pad(d.getHours())}:${pad(d.getMinutes())}`;
     }
 
-    function getFileIcon(name, type) {
+    function getFileIcon(name, type, large) {
         const ext = name.split('.').pop().toLowerCase();
         const imageExts = ['jpg', 'jpeg', 'png', 'gif', 'webp', 'svg', 'ico', 'bmp'];
         const videoExts = ['mp4', 'webm', 'mkv', 'avi', 'mov', 'flv'];
@@ -83,13 +111,13 @@
         const archiveExts = ['zip', 'rar', '7z', 'tar', 'gz', 'bz2', 'xz'];
         const docExts = ['pdf', 'doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx', 'txt'];
 
-        if (imageExts.includes(ext)) return '🖼️';
-        if (videoExts.includes(ext)) return '🎬';
-        if (audioExts.includes(ext)) return '🎵';
-        if (codeExts.includes(ext)) return '💻';
-        if (archiveExts.includes(ext)) return '📦';
-        if (docExts.includes(ext)) return '📄';
-        return '📄';
+        if (imageExts.includes(ext)) return large ? SVG.imageLg : SVG.image;
+        if (videoExts.includes(ext)) return large ? SVG.videoLg : SVG.video;
+        if (audioExts.includes(ext)) return large ? SVG.musicLg : SVG.music;
+        if (codeExts.includes(ext)) return large ? SVG.codeLg : SVG.code;
+        if (archiveExts.includes(ext)) return large ? SVG.archiveLg : SVG.archive;
+        if (docExts.includes(ext)) return large ? SVG.fileLg : SVG.file;
+        return large ? SVG.fileLg : SVG.file;
     }
 
     function isPreviewable(name) {
@@ -116,8 +144,8 @@
     function showToast(message, type = 'info') {
         const toast = document.createElement('div');
         toast.className = `toast toast-${type}`;
-        const icons = { success: '✓', error: '✕', info: 'ℹ' };
-        toast.innerHTML = `<span>${icons[type] || 'ℹ'}</span><span>${message}</span>`;
+        const icons = { success: SVG.check, error: SVG.x, info: SVG.info };
+        toast.innerHTML = `<span class="toast-icon">${icons[type] || SVG.info}</span><span>${message}</span>`;
         els.toastContainer.appendChild(toast);
 
         setTimeout(() => {
@@ -168,14 +196,14 @@
         els.loginPage.classList.remove('hidden');
         els.appPage.classList.add('hidden');
         els.loginError.classList.add('hidden');
-        els.usernameInput.value = '';
-        els.passwordInput.value = '';
+        // 恢复记住的密码
+        loadRememberedCredentials();
     }
 
     function showAppPage() {
         els.loginPage.classList.add('hidden');
         els.appPage.classList.remove('hidden');
-        els.userInfo.textContent = `👤 ${state.username}`;
+        els.userInfo.innerHTML = `${SVG.user} ${state.username}`;
         loadFiles();
     }
 
@@ -197,6 +225,17 @@
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ username, password }),
             });
+            // 处理记住密码
+            const rememberEl = document.getElementById('remember-password');
+            if (rememberEl && rememberEl.checked) {
+                localStorage.setItem('cd_remember', '1');
+                localStorage.setItem('cd_username', username);
+                localStorage.setItem('cd_password', btoa(password));
+            } else {
+                localStorage.removeItem('cd_remember');
+                localStorage.removeItem('cd_username');
+                localStorage.removeItem('cd_password');
+            }
             state.loggedIn = true;
             state.username = username;
             showAppPage();
@@ -207,6 +246,22 @@
             els.loginBtn.disabled = false;
             els.loginBtn.querySelector('.btn-text').classList.remove('hidden');
             els.loginBtn.querySelector('.btn-loading').classList.add('hidden');
+        }
+    }
+
+    function loadRememberedCredentials() {
+        const remembered = localStorage.getItem('cd_remember');
+        const rememberEl = document.getElementById('remember-password');
+        if (remembered === '1' && rememberEl) {
+            const savedUser = localStorage.getItem('cd_username') || '';
+            const savedPass = localStorage.getItem('cd_password');
+            els.usernameInput.value = savedUser;
+            els.passwordInput.value = savedPass ? atob(savedPass) : '';
+            rememberEl.checked = true;
+        } else {
+            els.usernameInput.value = '';
+            els.passwordInput.value = '';
+            if (rememberEl) rememberEl.checked = false;
         }
     }
 
@@ -239,7 +294,7 @@
 
     function renderBreadcrumb() {
         const parts = state.currentPath.split('/').filter(Boolean);
-        let html = '<a href="#" data-path="" class="breadcrumb-item">📁 根目录</a>';
+        let html = `<a href="#" data-path="" class="breadcrumb-item">${SVG.folderRoot} 根目录</a>`;
 
         let accumulated = '';
         for (const part of parts) {
@@ -284,14 +339,14 @@
         <div class="file-card" data-type="folder" data-path="${folder.path}" data-name="${folder.name}">
           <div class="file-card-actions">
             <div class="context-menu">
-              <button class="btn btn-icon context-menu-trigger" onclick="event.stopPropagation()">⋯</button>
+              <button class="btn btn-icon context-menu-trigger" onclick="event.stopPropagation()">${SVG.more}</button>
               <div class="context-menu-dropdown hidden">
-                <button class="context-menu-item" data-action="rename" data-key="${folder.path}" data-name="${folder.name}">✏️ 重命名</button>
-                <button class="context-menu-item danger" data-action="delete" data-key="${folder.path}" data-name="${folder.name}">🗑️ 删除</button>
+                <button class="context-menu-item" data-action="rename" data-key="${folder.path}" data-name="${folder.name}">${SVG.edit} 重命名</button>
+                <button class="context-menu-item danger" data-action="delete" data-key="${folder.path}" data-name="${folder.name}">${SVG.trash} 删除</button>
               </div>
             </div>
           </div>
-          <span class="file-card-icon">📁</span>
+          <span class="file-card-icon">${SVG.folderLg}</span>
           <span class="file-card-name">${folder.name}</span>
         </div>
       `;
@@ -299,17 +354,17 @@
 
         // 渲染文件
         for (const file of files) {
-            const icon = getFileIcon(file.name, file.type);
+            const icon = getFileIcon(file.name, file.type, true);
             html += `
         <div class="file-card" data-type="file" data-key="${file.key}" data-name="${file.name}">
           <div class="file-card-actions">
             <div class="context-menu">
-              <button class="btn btn-icon context-menu-trigger" onclick="event.stopPropagation()">⋯</button>
+              <button class="btn btn-icon context-menu-trigger" onclick="event.stopPropagation()">${SVG.more}</button>
               <div class="context-menu-dropdown hidden">
-                <button class="context-menu-item" data-action="download" data-key="${file.key}">📥 下载</button>
-                ${isPreviewable(file.name) ? `<button class="context-menu-item" data-action="preview" data-key="${file.key}" data-name="${file.name}">👁️ 预览</button>` : ''}
-                <button class="context-menu-item" data-action="rename" data-key="${file.key}" data-name="${file.name}">✏️ 重命名</button>
-                <button class="context-menu-item danger" data-action="delete" data-key="${file.key}" data-name="${file.name}">🗑️ 删除</button>
+                <button class="context-menu-item" data-action="download" data-key="${file.key}">${SVG.download} 下载</button>
+                ${isPreviewable(file.name) ? `<button class="context-menu-item" data-action="preview" data-key="${file.key}" data-name="${file.name}">${SVG.eye} 预览</button>` : ''}
+                <button class="context-menu-item" data-action="rename" data-key="${file.key}" data-name="${file.name}">${SVG.edit} 重命名</button>
+                <button class="context-menu-item danger" data-action="delete" data-key="${file.key}" data-name="${file.name}">${SVG.trash} 删除</button>
               </div>
             </div>
           </div>
@@ -333,29 +388,29 @@
         for (const folder of folders) {
             html += `
         <div class="file-list-row" data-type="folder" data-path="${folder.path}" data-name="${folder.name}">
-          <span class="col-name"><span>📁</span><span>${folder.name}</span></span>
+          <span class="col-name"><span>${SVG.folder}</span><span>${folder.name}</span></span>
           <span class="col-size">-</span>
           <span class="col-time">-</span>
           <span class="col-actions">
-            <button class="btn btn-icon" data-action="rename" data-key="${folder.path}" data-name="${folder.name}" title="重命名">✏️</button>
-            <button class="btn btn-icon" data-action="delete" data-key="${folder.path}" data-name="${folder.name}" title="删除">🗑️</button>
+            <button class="btn btn-icon" data-action="rename" data-key="${folder.path}" data-name="${folder.name}" title="重命名">${SVG.edit}</button>
+            <button class="btn btn-icon" data-action="delete" data-key="${folder.path}" data-name="${folder.name}" title="删除">${SVG.trash}</button>
           </span>
         </div>
       `;
         }
 
         for (const file of files) {
-            const icon = getFileIcon(file.name, file.type);
+            const icon = getFileIcon(file.name, file.type, false);
             html += `
         <div class="file-list-row" data-type="file" data-key="${file.key}" data-name="${file.name}">
           <span class="col-name"><span>${icon}</span><span>${file.name}</span></span>
           <span class="col-size">${formatSize(file.size)}</span>
           <span class="col-time">${formatTime(file.uploaded)}</span>
           <span class="col-actions">
-            ${isPreviewable(file.name) ? `<button class="btn btn-icon" data-action="preview" data-key="${file.key}" data-name="${file.name}" title="预览">👁️</button>` : ''}
-            <button class="btn btn-icon" data-action="download" data-key="${file.key}" title="下载">📥</button>
-            <button class="btn btn-icon" data-action="rename" data-key="${file.key}" data-name="${file.name}" title="重命名">✏️</button>
-            <button class="btn btn-icon" data-action="delete" data-key="${file.key}" data-name="${file.name}" title="删除">🗑️</button>
+            ${isPreviewable(file.name) ? `<button class="btn btn-icon" data-action="preview" data-key="${file.key}" data-name="${file.name}" title="预览">${SVG.eye}</button>` : ''}
+            <button class="btn btn-icon" data-action="download" data-key="${file.key}" title="下载">${SVG.download}</button>
+            <button class="btn btn-icon" data-action="rename" data-key="${file.key}" data-name="${file.name}" title="重命名">${SVG.edit}</button>
+            <button class="btn btn-icon" data-action="delete" data-key="${file.key}" data-name="${file.name}" title="删除">${SVG.trash}</button>
           </span>
         </div>
       `;
@@ -652,11 +707,11 @@
                 if (xhr.status === 200) {
                     el.querySelector('.progress-fill').style.width = '100%';
                     el.querySelector('.progress-fill').classList.add('complete');
-                    el.querySelector('.upload-item-status').textContent = '✓ 完成';
+                    el.querySelector('.upload-item-status').innerHTML = `${SVG.check} 完成`;
                     el.querySelector('.upload-item-status').classList.add('success');
                 } else {
                     el.querySelector('.progress-fill').classList.add('error');
-                    el.querySelector('.upload-item-status').textContent = '✕ 失败';
+                    el.querySelector('.upload-item-status').innerHTML = `${SVG.x} 失败`;
                     el.querySelector('.upload-item-status').classList.add('error');
                 }
             }
@@ -790,6 +845,9 @@
 
         // 模态框
         setupModals();
+
+        // 恢复记住的密码
+        loadRememberedCredentials();
 
         // 检查登录状态
         checkAuth();
