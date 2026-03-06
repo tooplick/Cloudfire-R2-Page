@@ -288,7 +288,6 @@ async function fetchSettings() {
 
 async function loadPath(path) {
   loading.value = true
-  currentPath.value = path
   try {
     const data = await api(`/api/list?path=${encodeURIComponent(path)}`)
     folders.value = data.folders || []
