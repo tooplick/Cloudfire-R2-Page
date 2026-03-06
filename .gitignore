@@ -2,3 +2,5 @@ node_modules/
 .wrangler/
 .dev.vars
 .env
+_legacy_vanilla/
+dist/
