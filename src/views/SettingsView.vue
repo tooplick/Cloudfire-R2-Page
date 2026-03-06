@@ -8,7 +8,7 @@
     <el-main class="settings-main" v-loading="loading">
       <el-row :gutter="20">
         <!-- Storage Usage Card -->
-        <el-col :span="24" :md="12" class="mb-4">
+        <el-col :span="24" class="mb-4">
           <el-card shadow="never">
             <template #header>
               <div class="card-header">
@@ -35,7 +35,7 @@
         </el-col>
 
         <!-- Upload Limits Card -->
-        <el-col :span="24" :md="12" class="mb-4">
+        <el-col :span="24" class="mb-4">
           <el-card shadow="never">
             <template #header>
               <div class="card-header">

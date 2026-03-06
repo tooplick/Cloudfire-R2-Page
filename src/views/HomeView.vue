@@ -72,6 +72,10 @@
                 </div>
                 <el-icon class="grid-icon text-primary"><Folder /></el-icon>
                 <div class="file-name" :title="folder.name">{{ folder.name }}</div>
+                <div class="file-meta" style="visibility: hidden;">
+                  <span>-</span>
+                  <span>-</span>
+                </div>
               </el-card>
             </el-col>
 
@@ -170,7 +174,7 @@
       </template>
     </el-dialog>
 
-    <el-dialog v-model="showUploadDialog" title="上传文件" width="500px">
+    <el-dialog v-model="showUploadDialog" title="上传文件" width="500px" align-center>
       <el-upload
         class="upload-drag-area"
         drag
