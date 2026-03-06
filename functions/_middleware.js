@@ -52,12 +52,13 @@ export async function onRequest(context) {
     const url = new URL(context.request.url);
     const path = url.pathname;
 
-    // 静态资源和登录页面直接放行
+    // 静态资源直接放行
     if (
         path === '/' ||
         path === '/index.html' ||
-        path === '/style.css' ||
-        path === '/script.js' ||
+        path === '/settings.html' ||
+        path.startsWith('/css/') ||
+        path.startsWith('/js/') ||
         path.startsWith('/assets/')
     ) {
         return context.next();
@@ -70,6 +71,11 @@ export async function onRequest(context) {
 
     // 退出登录接口放行
     if (path === '/auth/logout') {
+        return context.next();
+    }
+
+    // 公开分享链接放行
+    if (path.startsWith('/s/')) {
         return context.next();
     }
 

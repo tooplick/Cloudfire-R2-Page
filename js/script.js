@@ -29,6 +29,7 @@
         check: '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>',
         x: '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>',
         info: '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>',
+        share: '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>',
     };
 
     // ===== 状态管理 =====
@@ -37,6 +38,13 @@
         viewMode: 'grid', // 'grid' | 'list'
         loggedIn: false,
         username: '',
+        settings: {
+            max_file_size: 104857600,
+            chunk_size: 5242880,
+            chunk_enabled: true,
+            chunk_threshold: 10485760,
+            max_storage_size: 1073741824,
+        },
     };
 
     // ===== DOM 元素 =====
@@ -204,7 +212,7 @@
         els.loginPage.classList.add('hidden');
         els.appPage.classList.remove('hidden');
         els.userInfo.innerHTML = `${SVG.user} ${state.username}`;
-        loadFiles();
+        loadSettings().then(() => loadFiles());
     }
 
     async function handleLogin(e) {
@@ -362,6 +370,7 @@
               <button class="btn btn-icon context-menu-trigger" onclick="event.stopPropagation()">${SVG.more}</button>
               <div class="context-menu-dropdown hidden">
                 <button class="context-menu-item" data-action="download" data-key="${file.key}">${SVG.download} 下载</button>
+                <button class="context-menu-item" data-action="share" data-key="${file.key}" data-name="${file.name}">${SVG.share} 分享链接</button>
                 ${isPreviewable(file.name) ? `<button class="context-menu-item" data-action="preview" data-key="${file.key}" data-name="${file.name}">${SVG.eye} 预览</button>` : ''}
                 <button class="context-menu-item" data-action="rename" data-key="${file.key}" data-name="${file.name}">${SVG.edit} 重命名</button>
                 <button class="context-menu-item danger" data-action="delete" data-key="${file.key}" data-name="${file.name}">${SVG.trash} 删除</button>
@@ -409,6 +418,7 @@
           <span class="col-actions">
             ${isPreviewable(file.name) ? `<button class="btn btn-icon" data-action="preview" data-key="${file.key}" data-name="${file.name}" title="预览">${SVG.eye}</button>` : ''}
             <button class="btn btn-icon" data-action="download" data-key="${file.key}" title="下载">${SVG.download}</button>
+            <button class="btn btn-icon" data-action="share" data-key="${file.key}" data-name="${file.name}" title="分享">${SVG.share}</button>
             <button class="btn btn-icon" data-action="rename" data-key="${file.key}" data-name="${file.name}" title="重命名">${SVG.edit}</button>
             <button class="btn btn-icon" data-action="delete" data-key="${file.key}" data-name="${file.name}" title="删除">${SVG.trash}</button>
           </span>
@@ -499,6 +509,7 @@
                     case 'preview': previewFile(key, name); break;
                     case 'rename': showRenameDialog(key, name); break;
                     case 'delete': showDeleteConfirm(key, name); break;
+                    case 'share': shareFile(key, name); break;
                 }
             });
         });
@@ -512,6 +523,22 @@
         document.body.appendChild(a);
         a.click();
         a.remove();
+    }
+
+    async function shareFile(key, name) {
+        try {
+            const data = await api('/api/share', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ key, name }),
+            });
+            if (data.url) {
+                await navigator.clipboard.writeText(data.url);
+                showToast('分享链接已复制到剪贴板', 'success');
+            }
+        } catch (err) {
+            showToast('创建分享失败: ' + err.message, 'error');
+        }
     }
 
     async function previewFile(key, name) {
@@ -664,7 +691,19 @@
         els.uploadProgress.classList.remove('hidden');
 
         for (const file of fileList) {
-            uploadSingleFile(file);
+            // 前端校验文件大小
+            if (file.size > state.settings.max_file_size) {
+                const limitMB = (state.settings.max_file_size / 1024 / 1024).toFixed(0);
+                showToast(`文件 "${file.name}" 超出大小限制（最大 ${limitMB} MB）`, 'error');
+                continue;
+            }
+
+            // 判断是否使用分片上传
+            if (state.settings.chunk_enabled && file.size > state.settings.chunk_threshold) {
+                uploadChunkedFile(file);
+            } else {
+                uploadSingleFile(file);
+            }
         }
     }
 
@@ -729,6 +768,92 @@
 
         xhr.open('POST', '/api/upload');
         xhr.send(formData);
+    }
+
+    // ===== 分片上传 =====
+    async function uploadChunkedFile(file) {
+        const itemId = 'upload-' + Date.now() + '-' + Math.random().toString(36).slice(2, 6);
+        const key = state.currentPath ? `${state.currentPath}${file.name}` : file.name;
+        const chunkSize = state.settings.chunk_size;
+        const totalChunks = Math.ceil(file.size / chunkSize);
+
+        const itemHtml = `
+      <div class="upload-item" id="${itemId}">
+        <div class="upload-item-info">
+          <span class="upload-item-name" title="${file.name}">${file.name}</span>
+          <span class="upload-item-status">分片上传中... 0/${totalChunks}</span>
+        </div>
+        <div class="progress-bar">
+          <div class="progress-fill" style="width: 0%"></div>
+        </div>
+      </div>
+    `;
+        els.uploadList.insertAdjacentHTML('beforeend', itemHtml);
+
+        try {
+            // 1. 初始化分片上传
+            const initResp = await fetch('/api/upload-chunk?action=init', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ key, contentType: file.type || 'application/octet-stream' }),
+            });
+            const initData = await initResp.json();
+            if (!initData.success) throw new Error(initData.error || '初始化失败');
+
+            const { uploadId } = initData;
+            const parts = [];
+
+            // 2. 上传每个分片
+            for (let i = 0; i < totalChunks; i++) {
+                const start = i * chunkSize;
+                const end = Math.min(start + chunkSize, file.size);
+                const chunk = file.slice(start, end);
+                const partNumber = i + 1;
+
+                const partResp = await fetch(
+                    `/api/upload-chunk?action=upload&uploadId=${encodeURIComponent(uploadId)}&key=${encodeURIComponent(key)}&partNumber=${partNumber}`,
+                    { method: 'POST', body: chunk }
+                );
+                const partData = await partResp.json();
+                if (!partData.success) throw new Error(partData.error || `分片 ${partNumber} 上传失败`);
+
+                parts.push(partData.part);
+
+                // 更新进度
+                const el = document.getElementById(itemId);
+                if (el) {
+                    const pct = Math.round((partNumber / totalChunks) * 100);
+                    el.querySelector('.progress-fill').style.width = pct + '%';
+                    el.querySelector('.upload-item-status').textContent = `分片上传中... ${partNumber}/${totalChunks}`;
+                }
+            }
+
+            // 3. 完成分片上传
+            const completeResp = await fetch('/api/upload-chunk?action=complete', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ key, uploadId, parts }),
+            });
+            const completeData = await completeResp.json();
+            if (!completeData.success) throw new Error(completeData.error || '合并失败');
+
+            const el = document.getElementById(itemId);
+            if (el) {
+                el.querySelector('.progress-fill').style.width = '100%';
+                el.querySelector('.progress-fill').classList.add('complete');
+                el.querySelector('.upload-item-status').innerHTML = `${SVG.check} 完成`;
+                el.querySelector('.upload-item-status').classList.add('success');
+            }
+            loadFiles();
+        } catch (err) {
+            const el = document.getElementById(itemId);
+            if (el) {
+                el.querySelector('.progress-fill').classList.add('error');
+                el.querySelector('.upload-item-status').innerHTML = `${SVG.x} ${err.message}`;
+                el.querySelector('.upload-item-status').classList.add('error');
+            }
+            showToast(`上传失败: ${err.message}`, 'error');
+        }
     }
 
     // ===== 视图切换 =====
@@ -851,6 +976,24 @@
 
         // 检查登录状态
         checkAuth();
+    }
+
+    // ===== 设置管理 =====
+    async function loadSettings() {
+        try {
+            const data = await api('/api/settings');
+            if (data.settings) {
+                state.settings = {
+                    max_file_size: parseInt(data.settings.max_file_size) || 104857600,
+                    chunk_size: parseInt(data.settings.chunk_size) || 5242880,
+                    chunk_enabled: data.settings.chunk_enabled === 'true',
+                    chunk_threshold: parseInt(data.settings.chunk_threshold) || 10485760,
+                    max_storage_size: parseInt(data.settings.max_storage_size) || 1073741824,
+                };
+            }
+        } catch {
+            // 使用默认值
+        }
     }
 
     // 启动

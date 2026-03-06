@@ -10,3 +10,8 @@ bucket_name = "file" # R2 存储桶名称
 # AUTH_USERNAME - 登录用户名
 # AUTH_PASSWORD - 登录密码
 # SESSION_SECRET - Session 加密密钥
+
+[[d1_databases]]
+binding = "DB"
+database_name = "cloudfire-config"
+database_id = "06f1e6c3-899b-4fd1-9597-51cc6a8742c9" # 在 Cloudflare Dashboard 创建 D1 后填入
