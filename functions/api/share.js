@@ -2,6 +2,8 @@
 // GET  /api/share — 列出所有分享链接
 // DELETE /api/share — 删除分享链接 { id }
 
+import { ensureTables } from './_db.js';
+
 function generateId() {
     const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
     const arr = new Uint8Array(12);
@@ -12,6 +14,7 @@ function generateId() {
 export async function onRequestPost(context) {
     const db = context.env.DB;
     try {
+        await ensureTables(db);
         const { key, name, expiresIn } = await context.request.json();
 
         if (!key || !name) {
@@ -40,6 +43,7 @@ export async function onRequestPost(context) {
 export async function onRequestGet(context) {
     const db = context.env.DB;
     try {
+        await ensureTables(db);
         const result = await db.prepare(
             'SELECT id, file_key, file_name, created_at, expires_at, download_count FROM shares ORDER BY created_at DESC'
         ).all();
@@ -53,6 +57,7 @@ export async function onRequestGet(context) {
 export async function onRequestDelete(context) {
     const db = context.env.DB;
     try {
+        await ensureTables(db);
         const { id } = await context.request.json();
 
         if (!id) {

@@ -1,4 +1,6 @@
 // POST /api/upload — FormData: file, path
+import { ensureTables } from './_db.js';
+
 export async function onRequestPost(context) {
     const bucket = context.env.R2_BUCKET;
     const db = context.env.DB;
@@ -7,6 +9,7 @@ export async function onRequestPost(context) {
     let maxFileSize = 104857600; // 默认 100MB
     let maxStorageSize = 1073741824; // 默认 1GB
     try {
+        await ensureTables(db);
         const result = await db.prepare(
             "SELECT key, value FROM settings WHERE key IN ('max_file_size', 'max_storage_size')"
         ).all();

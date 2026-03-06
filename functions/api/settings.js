@@ -1,6 +1,8 @@
 // GET /api/settings — 读取所有配置
 // POST /api/settings — 批量更新配置
 
+import { ensureTables } from './_db.js';
+
 const DEFAULT_SETTINGS = {
     max_file_size: '104857600',       // 100MB
     chunk_size: '5242880',            // 5MB
@@ -23,6 +25,7 @@ async function getAllSettings(db) {
 export async function onRequestGet(context) {
     const db = context.env.DB;
     try {
+        await ensureTables(db);
         const settings = await getAllSettings(db);
         return Response.json({ success: true, settings });
     } catch (err) {
@@ -34,6 +37,7 @@ export async function onRequestGet(context) {
 export async function onRequestPost(context) {
     const db = context.env.DB;
     try {
+        await ensureTables(db);
         const body = await context.request.json();
         const { settings } = body;
 
